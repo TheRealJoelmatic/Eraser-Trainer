@@ -10,5 +10,24 @@ namespace EraserModsMenus.Menus
     {
         public bool isMenuShown = true;
         public bool isEorH = false;
+
+        public bool menuMain = true;
+        public bool menuRestart = false;
+        public bool menuTeleport = false;
+        public bool menuOther = false;
+
+        public bool isHighJump = false;
+        public float newHightJump = 12f;
+
+        public bool killAll = false;
+        public bool Splat = false;
+
+        public void allOfMenuOff()
+        {
+            menuMain = false;
+            menuRestart = false;
+            menuTeleport = false;
+            menuOther = false;
+        }
     }
 }
