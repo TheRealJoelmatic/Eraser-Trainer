@@ -35,7 +35,7 @@ namespace EraserModsMenus.Trainers
             }
             else
             {
-                MelonLogger.LogError("Player object not found.");
+                MelonLogger.Error("Player object not found.");
             }
         }
 

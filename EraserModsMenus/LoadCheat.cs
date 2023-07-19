@@ -2,8 +2,6 @@
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
-using UnityEngine.UI;
 using EraserModsMenus.Trainers;
 
 namespace EraserModsMenus
@@ -15,12 +13,13 @@ namespace EraserModsMenus
         Menu menu = new Menu();
         SplatInterceptor splat = new SplatInterceptor();
 
-        bool pausemenu = false;
         int killBuffer = 0;
+
+        bool oldCursorV;
+        CursorLockMode oldCursorM;
 
         public override void OnGUI()
         {
-            menu.StartSetup();
             menu.CreateGUI(options);
         }
 
@@ -28,102 +27,66 @@ namespace EraserModsMenus
         {
             MelonLogger.Msg($"Scene {sceneName} with build index {buildIndex} has been loaded!");
             options.isMenuShown = false;
-            pausemenu = false;
+        }
+
+        private Trainers.hRest hRestInstance;
+        private Trainers.eRest eRestInstance;
+
+        public override void OnLateInitializeMelon()
+        {
+            hRestInstance = new Trainers.hRest();
+            eRestInstance = new Trainers.eRest();
         }
 
         public override void OnLateUpdate()
         {
-            int sceneIndex = SceneManager.GetActiveScene().buildIndex;
-            if (Input.GetKeyDown(KeyCode.F5))
+            //toggle menu
+            if (Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.Y))
             {
                 options.isMenuShown = !options.isMenuShown;
-                MelonLogger.Msg($"Menu: " + options.isMenuShown);
-                MelonLogger.Msg($"Hard mode: " + options.isEorH);
-
-                mouseChecker();
-
-            }
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                MelonLogger.Msg("Restart pressed");
-
-
-                if (options.isEorH)
+                if (options.isMenuShown)
                 {
-                    var hRestInstance = new Trainers.hRest();
-                    MelonCoroutines.Start(hRestInstance.Rest());
+                    oldCursorV = Cursor.visible;
+                    oldCursorM = Cursor.lockState;
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
                 }
                 else
                 {
-                    var eRestInstance = new Trainers.eRest();
+                    Cursor.visible = oldCursorV;
+                    Cursor.lockState = oldCursorM;
+                }
+                
+                MelonLogger.Msg($"Menu: {options.isMenuShown}");
+            }
+             if (Input.GetKeyDown(KeyCode.R))
+            {
+                MelonLogger.Msg("Restart pressed");
+
+                if (options.isEorH)
+                    MelonCoroutines.Start(hRestInstance.Rest());
+                else
                     MelonCoroutines.Start(eRestInstance.Rest());
-                }
             }
 
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                splat.SplatFixer();
-                if (sceneIndex == 1)
-                {
-                    pausemenu = !pausemenu;
-                }
-
-            }
-
-            if (options.isHighJump)
-            {
-                other.highJump(options, true);
-            }
-            else
-            {
-                other.highJump(options, false);
-            }
-            if (options.killAll && killBuffer <= 1)
+            // Kill all balls (buggy)
+            if (options.killAll && killBuffer == 0)
             {
                 killBuffer = 10;
                 other.killAll(options, "Cannon Ball");
-                MelonLogger.Msg($"KILLING: Cannon Ball");
+                MelonLogger.Msg("KILLING: Cannon Ball");
             }
             else if (options.killAll || options.Splat)
             {
                 killBuffer++;
             }
 
-            if(options.Splat)
+            // Checks if hit
+            if (options.Splat)
             {
                 splat.SplatFixer();
             }
-            mouseChecker();
-        }
 
-        public void mouseChecker()
-        {
-            int sceneIndex = SceneManager.GetActiveScene().buildIndex;
-            if (pausemenu && sceneIndex == 1)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            if (options.isMenuShown && sceneIndex == 1)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                Time.timeScale = 0f;
-            }
-            else
-            {
-                Time.timeScale = 1f;
-            }
-            if (sceneIndex != 1)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
         }
     }
 }

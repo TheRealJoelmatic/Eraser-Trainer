@@ -23,66 +23,64 @@ namespace EraserModsMenus.Menus
         Other other = new Other();
 
         string inputValue = "120";
-
-        public void StartSetup()
-        {
-            blackTexture = new Texture2D(1, 1);
-            blackTexture.SetPixel(0, 0, new Color(5f / 255f, 24f / 255f, 33f / 255f));
-            blackTexture.Apply();
-
-            topLineTexture = new Texture2D(1, 1);
-            topLineTexture.SetPixel(0, 0, new Color(38f / 255f, 104f / 255f, 103f / 255f));
-            topLineTexture.Apply();
-
-            whiteTexture = new Texture2D(1, 1);
-            whiteTexture.SetPixel(0, 0, new Color(26f / 255f, 70f / 255f, 69f / 255f));
-            whiteTexture.Apply();
-
-            grayTexture = new Texture2D(1, 1);
-            grayTexture.SetPixel(0, 0, Color.gray);
-            grayTexture.Apply();
-
-            lineTexture = new Texture2D(1, 1);
-            lineTexture.SetPixel(0, 0,  new Color(38f / 255f, 104f / 255f, 103f / 255f));
-            lineTexture.Apply();
-
-            // Create a custom box style
-            boxStyle = new GUIStyle(GUI.skin.box);
-            boxStyle.fontSize = 15;
-            boxStyle.alignment = TextAnchor.UpperLeft;
-            boxStyle.normal.textColor = new Color(245f / 255f, 136f / 255f, 0f / 255f);
-            boxStyle.normal.background = blackTexture; // Use a black texture for the background
-            boxStyle.border = new RectOffset(10, 10, 10, 10);
-
-            // Create a custom button style
-            buttonStyle = new GUIStyle(GUI.skin.button);
-            buttonStyle.fontSize = 14;
-            buttonStyle.padding = new RectOffset(10, 10, 5, 5);
-            buttonStyle.normal.textColor = Color.white;
-            buttonStyle.normal.background = whiteTexture; // Use a white texture for the background
-            buttonStyle.hover.background = topLineTexture; // Use a gray texture for the hover background
-            buttonStyle.border = new RectOffset(10, 10, 10, 10);
-
-            // Create a custom button style
-            tabStyle = new GUIStyle(GUI.skin.button);
-            tabStyle.fontSize = 20;
-            tabStyle.normal.textColor = Color.white;
-            tabStyle.normal.background = whiteTexture; // Use a white texture for the background
-            tabStyle.hover.background = topLineTexture; // Use a gray texture for the hover background
-            tabStyle.border = new RectOffset(10, 10, 10, 10);
-
-
-        }
         public void CreateGUI(Options options)
         {
             int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+            if (options == null || !options.isMenuShown)
+            {
+                // Handle null options object
+                return;
+            }
+
             if (options.isMenuShown)
             {
-                if (options == null || !options.isMenuShown)
-                {
-                    // Handle null options object
-                    return;
-                }
+
+                blackTexture = new Texture2D(1, 1);
+                blackTexture.SetPixel(0, 0, new Color(5f / 255f, 24f / 255f, 33f / 255f));
+                blackTexture.Apply();
+
+                topLineTexture = new Texture2D(1, 1);
+                topLineTexture.SetPixel(0, 0, new Color(38f / 255f, 104f / 255f, 103f / 255f));
+                topLineTexture.Apply();
+
+                whiteTexture = new Texture2D(1, 1);
+                whiteTexture.SetPixel(0, 0, new Color(26f / 255f, 70f / 255f, 69f / 255f));
+                whiteTexture.Apply();
+
+                grayTexture = new Texture2D(1, 1);
+                grayTexture.SetPixel(0, 0, Color.gray);
+                grayTexture.Apply();
+
+                lineTexture = new Texture2D(1, 1);
+                lineTexture.SetPixel(0, 0, new Color(38f / 255f, 104f / 255f, 103f / 255f));
+                lineTexture.Apply();
+
+                // Create a custom box style
+                boxStyle = new GUIStyle(GUI.skin.box);
+                boxStyle.fontSize = 15;
+                boxStyle.alignment = TextAnchor.UpperLeft;
+                boxStyle.normal.textColor = new Color(245f / 255f, 136f / 255f, 0f / 255f);
+                boxStyle.normal.background = blackTexture; // Use a black texture for the background
+                boxStyle.border = new RectOffset(10, 10, 10, 10);
+
+                // Create a custom button style
+                buttonStyle = new GUIStyle(GUI.skin.button);
+                buttonStyle.fontSize = 14;
+                buttonStyle.padding = new RectOffset(10, 10, 5, 5);
+                buttonStyle.normal.textColor = Color.white;
+                buttonStyle.normal.background = whiteTexture; // Use a white texture for the background
+                buttonStyle.hover.background = topLineTexture; // Use a gray texture for the hover background
+                buttonStyle.border = new RectOffset(10, 10, 10, 10);
+
+                // Create a custom button style
+                tabStyle = new GUIStyle(GUI.skin.button);
+                tabStyle.fontSize = 20;
+                tabStyle.normal.textColor = Color.white;
+                tabStyle.normal.background = whiteTexture; // Use a white texture for the background
+                tabStyle.hover.background = topLineTexture; // Use a gray texture for the hover background
+                tabStyle.border = new RectOffset(10, 10, 10, 10);
+
 
                 float boxWidth = 700;
                 float boxHeight = 370;
@@ -127,6 +125,14 @@ namespace EraserModsMenus.Menus
                 {
                     options.allOfMenuOff();
                     options.menuTeleport = true;
+                }
+
+                GUILayout.Space(10); // Add spacing between tabs
+
+                if (GUILayout.Button("Fun", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
+                {
+                    options.allOfMenuOff();
+                    options.menufun = true;
                 }
 
                 GUILayout.Space(10); // Add spacing between tabs
@@ -294,7 +300,7 @@ namespace EraserModsMenus.Menus
 
                 }
 
-                if (options.menuOther)
+                if (options.menufun)
                 {
                     if (sceneIndex != 1)
                     {
@@ -305,7 +311,7 @@ namespace EraserModsMenus.Menus
                         Rect labelRect = new Rect(labelX, labelY, labelWidth, labelHeight);
 
                         // Set the text content and style for the label
-                        GUIContent labelText = new GUIContent("Teleport only workings in game!");
+                        GUIContent labelText = new GUIContent("This only workings in game!");
                         GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
                         labelStyle.alignment = TextAnchor.MiddleCenter;
                         labelStyle.fontSize = 20;
@@ -321,6 +327,7 @@ namespace EraserModsMenus.Menus
                         if (GUI.Button(buttonRect2, "Custom Jump hight on (" + options.newHightJump + ")", buttonStyle))
                         {
                             options.isHighJump = !options.isHighJump;
+                            other.highJump(options, true);
                         }
                     }
                     else
@@ -328,9 +335,9 @@ namespace EraserModsMenus.Menus
                         if (GUI.Button(buttonRect2, "Custom Jump hight off (" + options.newHightJump + ")", buttonStyle))
                         {
                             options.isHighJump = !options.isHighJump;
+                            other.highJump(options, false);
                         }
                     }
-
 
                     GUILayout.BeginArea(new Rect(boxX, tabsY + 100, boxWidth, boxHeight - textSize.y - 100));
 
@@ -342,6 +349,7 @@ namespace EraserModsMenus.Menus
                     if (GUILayout.Button("0", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
                     {
                         options.newHightJump = 0;
+                        if (options.isHighJump) other.highJump(options, false);
                     }
 
                     GUILayout.Space(10); // Add spacing between tabs
@@ -349,6 +357,7 @@ namespace EraserModsMenus.Menus
                     if (GUILayout.Button("6", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
                     {
                         options.newHightJump = 6;
+                        if (options.isHighJump) other.highJump(options, false);
                     }
 
                     GUILayout.Space(10); // Add spacing between tabs
@@ -356,6 +365,7 @@ namespace EraserModsMenus.Menus
                     if (GUILayout.Button("12", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
                     {
                         options.newHightJump = 12;
+                        if (options.isHighJump) other.highJump(options, false);
                     }
 
                     GUILayout.Space(10); // Add spacing between tabs
@@ -363,6 +373,7 @@ namespace EraserModsMenus.Menus
                     if (GUILayout.Button("16", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
                     {
                         options.newHightJump = 16;
+                        if (options.isHighJump) other.highJump(options, false);
                     }
 
                     GUILayout.Space(10); // Add spacing between tabs
@@ -370,6 +381,7 @@ namespace EraserModsMenus.Menus
                     if (GUILayout.Button("50", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
                     {
                         options.newHightJump = 50;
+                        if (options.isHighJump) other.highJump(options, false);
                     }
 
                     GUILayout.Space(10); // Add spacing between tabs
@@ -377,6 +389,7 @@ namespace EraserModsMenus.Menus
                     if (GUILayout.Button("120", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
                     {
                         options.newHightJump = 120;
+                        if (options.isHighJump) other.highJump(options, false);
                     }
 
                     GUILayout.FlexibleSpace(); // Add flexible space after the tabs
@@ -386,6 +399,119 @@ namespace EraserModsMenus.Menus
                     GUILayout.EndArea(); // End the box area
 
                     //options.newHightJump;
+                    Rect buttonRect4 = new Rect(boxX + buttonX, boxY + buttonY + buttonHeight + 40, buttonWidth, buttonHeight);
+                    if (options.Splat)
+                    {
+                        if (GUI.Button(buttonRect4, "Anti Splat is on", buttonStyle))
+                        {
+                            options.Splat = !options.Splat;
+                        }
+                    }
+                    else
+                    {
+                        if (GUI.Button(buttonRect4, "Anti Splat is off", buttonStyle))
+                        {
+                            options.Splat = !options.Splat;
+                        }
+                    }
+                }
+
+                if (options.menuOther)
+                {
+                    if (sceneIndex != 1)
+                    {
+                        float labelWidth = 600;
+                        float labelHeight = 200;
+                        float labelX = (Screen.width - labelWidth) / 2;
+                        float labelY = (Screen.height - labelHeight) / 2;
+                        Rect labelRect = new Rect(labelX, labelY, labelWidth, labelHeight);
+
+                        // Set the text content and style for the label
+                        GUIContent labelText = new GUIContent("This only workings in game!");
+                        GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
+                        labelStyle.alignment = TextAnchor.MiddleCenter;
+                        labelStyle.fontSize = 20;
+
+                        // Draw the text label
+                        GUI.Label(labelRect, labelText, labelStyle);
+                        return;
+                    }
+                    Rect buttonRect3 = new Rect(boxX + buttonX, boxY + buttonY + buttonHeight - 40, buttonWidth, buttonHeight);
+                    if (options.isFov)
+                    {
+                        if (GUI.Button(buttonRect3, "Custom fov on (" + options.newFov + ")", buttonStyle))
+                        {
+                            options.isFov = !options.isFov;
+                            other.changeFov(options, true);
+                        }
+                    }
+                    else
+                    {
+                        if (GUI.Button(buttonRect3, "Custom fov off (" + options.newFov + ")", buttonStyle))
+                        {
+                            options.isFov = !options.isFov;
+                            other.changeFov(options, false);
+                        }
+                    }
+
+                    GUILayout.BeginArea(new Rect(boxX, tabsY + 100, boxWidth, boxHeight - textSize.y - 100));
+
+                    GUILayout.BeginHorizontal(); // Start a horizontal layout for the tabs
+
+                    GUILayout.FlexibleSpace(); // Add flexible space before the tabs
+
+
+                    if (GUILayout.Button("1", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
+                    {
+                        options.newFov = 1;
+                        if (options.isFov) other.changeFov(options, false);
+                    }
+
+                    GUILayout.Space(10); // Add spacing between tabs
+
+                    if (GUILayout.Button("6.7f", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
+                    {
+                        options.newFov = 6.7f;
+                        if (options.isFov) other.changeFov(options, false);
+                    }
+
+                    GUILayout.Space(10); // Add spacing between tabs
+
+                    if (GUILayout.Button("14", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
+                    {
+                        options.newFov = 14;
+                        if (options.isFov) other.changeFov(options, false);
+                    }
+
+                    GUILayout.Space(10); // Add spacing between tabs
+
+                    if (GUILayout.Button("28", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
+                    {
+                        options.newFov = 28;
+                        if (options.isFov) other.changeFov(options, false);
+                    }
+
+                    GUILayout.Space(10); // Add spacing between tabs
+
+                    if (GUILayout.Button("67", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
+                    {
+                        options.newFov = 67;
+                        if (options.isFov) other.changeFov(options, false);
+                    }
+
+                    GUILayout.Space(10); // Add spacing between tabs
+
+                    if (GUILayout.Button("140", tabStyle, GUILayout.Width(tabsWidth), GUILayout.Height(tabsHeight)))
+                    {
+                        options.newFov = 140;
+                        if(options.isFov) other.changeFov(options, false);
+                    }
+
+                    GUILayout.FlexibleSpace(); // Add flexible space after the tabs
+
+                    GUILayout.EndHorizontal(); // End the horizontal layout for the tabs
+
+                    GUILayout.EndArea(); // End the box area
                     Rect buttonRect4 = new Rect(boxX + buttonX, boxY + buttonY + buttonHeight + 40, buttonWidth, buttonHeight);
                     if (options.killAll)
                     {
@@ -401,35 +527,8 @@ namespace EraserModsMenus.Menus
                             options.killAll = !options.killAll;
                         }
                     }
-
-                    Rect buttonRect5 = new Rect(boxX + buttonX, boxY + buttonY + buttonHeight + 80, buttonWidth, buttonHeight);
-                    if (options.Splat)
-                    {
-                        if (GUI.Button(buttonRect5, "Anti Splat is on", buttonStyle))
-                        {
-                            options.Splat = !options.Splat;
-                        }
-                    }
-                    else
-                    {
-                        if (GUI.Button(buttonRect5, "Anti Splat is off", buttonStyle))
-                        {
-                            options.Splat = !options.Splat;
-                        }
-                    }
                 }
             }
-        }
-
-        private IEnumerator NoahsArms()
-        {
-            TP.tpPlayer(new Vector3(5f, 1.22f, 5f));
-            yield return new WaitForSeconds(2.5f);
-            TP.tpPlayer(new Vector3(4.4445f, 208.22f, 24.4925f));
-            yield return new WaitForSeconds(2.5f);
-            TP.tpPlayer(new Vector3(4.4445f, 470.22f, 24.4925f));
-            yield return new WaitForSeconds(2.5f);
-            TP.tpPlayer(new Vector3(18.4745f, 386.22f, 12.5002f));
         }
     }
 }

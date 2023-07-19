@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Collections;
-using System.Text;
-using System.Diagnostics;
+﻿using System.Collections;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using EraserModsMenus.Menus;
 using UnityEngine.UI;
-using System.Threading.Tasks;
 
 namespace EraserModsMenus.Trainers
 {

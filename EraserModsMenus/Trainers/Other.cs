@@ -1,7 +1,4 @@
-﻿using MelonLoader;
-using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 using EraserModsMenus.Menus;
 
 namespace EraserModsMenus.Trainers
@@ -12,7 +9,7 @@ namespace EraserModsMenus.Trainers
         {
             GameObject playerObject = GameObject.Find("player");
             PlayerController playercontroller = playerObject.GetComponent<PlayerController>();
-            if (Change)
+            if (!Change)
             {
                 if(playercontroller.jumpSpeed == options.newHightJump)
                 {
@@ -40,26 +37,26 @@ namespace EraserModsMenus.Trainers
         {
             GameObject playerObject = GameObject.Find("player");
             PlayerController playercontroller = playerObject.GetComponent<PlayerController>();
-            if (Change)
+            if (!Change)
             {
-                if (playercontroller.jumpSpeed == options.newHightJump)
+                if (playercontroller.cameraDistance == options.newFov)
                 {
                     return;
                 }
                 else
                 {
-                    playercontroller.cameraDistance = options.newHightJump;
+                    playercontroller.cameraDistance = options.newFov;
                 }
             }
             else
             {
-                if (playercontroller.jumpSpeed == 12f)
+                if (playercontroller.cameraDistance == 6.7f)
                 {
                     return;
                 }
                 else
                 {
-                    playercontroller.jumpSpeed = 12f;
+                    playercontroller.cameraDistance = 6.7f;
                     return;
                 }
             }
@@ -82,6 +79,5 @@ namespace EraserModsMenus.Trainers
 
             }
         }
-
     }
 }
